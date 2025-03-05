@@ -18,18 +18,18 @@ namespace AuthorizationAPI.Controllers
             _configuration = configuration;
         }
 
-        private static List<User> Users = new List<User>
+        private static Dictionary<int, User> Users = new Dictionary<int, User>
         {
-            new User { Id = 1, Username = "testuser", PasswordHash = HashPassword("password"), Role = "Subscriber" },
-            new User { Id = 2, Username = "writeruser", PasswordHash = HashPassword("password"), Role = "Writer" },
-            new User { Id = 3, Username = "writer2user", PasswordHash = HashPassword("password"), Role = "Writer" },
-            new User { Id = 4, Username = "editoruser", PasswordHash = HashPassword("password"), Role = "Editor" }
+            { 1, new User { Id = 1, Username = "testuser", PasswordHash = HashPassword("password"), Role = "Subscriber" } },
+            { 2, new User { Id = 2, Username = "writeruser", PasswordHash = HashPassword("password"), Role = "Writer" } },
+            { 3, new User { Id = 3, Username = "writer2user", PasswordHash = HashPassword("password"), Role = "Writer" } },
+            { 4, new User { Id = 4, Username = "editoruser", PasswordHash = HashPassword("password"), Role = "Editor" } }
         };
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginModel login)
         {
-            var user = Users.FirstOrDefault(u => u.Username == login.Username);
+            var user = Users.Values.FirstOrDefault(u => u.Username == login.Username);
             if (user != null && VerifyPassword(login.Password, user.PasswordHash))
             {
                 var token = GenerateJwtToken(user);
