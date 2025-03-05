@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AuthenticationAPILibrary.Models
@@ -11,6 +12,7 @@ namespace AuthenticationAPILibrary.Models
         public int Id { get; set; }
         public string Content { get; set; }
         public int ArticleId { get; set; }
-        public Article Article { get; set; }
+        [JsonIgnore]
+        public Article? Article { get; set; }
     }
 }
