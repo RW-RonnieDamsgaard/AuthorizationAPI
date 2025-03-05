@@ -20,8 +20,9 @@ cd AuthorizationAPI
 
 2. **Build and run the project**:
 
-dotnet build
-dotnet run
+`dotnet build`
+
+`dotnet run`
 
 
 3. **Open Swagger UI**:
@@ -35,10 +36,13 @@ dotnet run
     - **Endpoint**: `POST /api/auth/login`
     - **Description**: Authenticates a user and returns a JWT token.
     - **Request Body**:
+
+`
 {
     "username": "string",
     "password": "string"
 }
+`
 
 
 ### Articles
@@ -52,11 +56,12 @@ dotnet run
     - **Description**: Creates a new article.
     - **Request Body**:
 
+`
 {
     "title": "string",
     "content": "string"
 }
-
+`
 
 4. **Delete Article** (Editor):
     - **Endpoint**: `DELETE /api/article/delete-article/{id}`
@@ -73,10 +78,11 @@ dotnet run
     - **Description**: Adds a comment to an article.
     - **Request Body**:
 
+`
 {
     "content": "string"
 }
-
+`
 
 3. **Delete Comment** (Editor):
     - **Endpoint**: `DELETE /api/article/delete-comment/{id}`
