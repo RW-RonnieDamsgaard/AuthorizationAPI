@@ -20,8 +20,8 @@ cd AuthorizationAPI
 
 2. **Build and run the project**:
 
-dotnet build
-dotnet run
+`dotnet build`
+`dotnet run`
 
 
 3. **Open Swagger UI**:
