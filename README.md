@@ -2,9 +2,9 @@
 
 AuthorizationAPI is an ASP.NET Core Web API that provides functionalities for managing articles and comments. The API supports different roles with specific permissions:
 - **Editor**: Can edit and delete articles, and edit and delete user comments.
-- **Writer / Journalist**: Can create and edit their own articles.
-- **Subscriber / Registered User**: Can comment on articles.
-- **Guest / Public User**: Can read articles.
+- **Writer**: Can create and edit their own articles.
+- **Subscriber**: Can comment on articles.
+- **Guest**: Can read articles.
 
 ## Prerequisites
 
@@ -15,7 +15,7 @@ AuthorizationAPI is an ASP.NET Core Web API that provides functionalities for ma
 
 1. **Clone the repository**:
 
-git clone https://github.com/your-username/AuthorizationAPI.git
+git clone https://github.com/RW-RonnieDamsgaard/AuthorizationAPI.git
 cd AuthorizationAPI
 
 2. **Build and run the project**:
@@ -84,17 +84,24 @@ dotnet run
 
 ## Testing with Swagger
 
-1. **Login**:
-    - Go to the `POST /api/auth/login` endpoint.
-    - Enter the username and password for an Editor, Writer, or Subscriber.
-    - Click "Execute" to get the JWT token.
+1. **users**:
+    - Subscriber (username: testuser, password: password)
+    - Writer (username: writeruser, password: password)
+    - Writer (username: writer2user, password: password)
+    - Editor (username: editoruser, password: password)
 
-2. **Authorize**:
+2. **Login**:
+    - Go to the `POST /api/auth/login` endpoint.
+    - Enter the username and password for an Editor, Writer, writer2 or Subscriber.
+    - Click "Execute" to get the JWT token.
+    - Copy the token
+
+3. **Authorize**:
     - Click on the "Authorize" button in the Swagger UI.
     - Enter the JWT token in the format `Bearer <token>`.
     - Click "Authorize" to authenticate.
 
-3. **Test Endpoints**:
+4. **Test Endpoints**:
     - **Editor**:
         - Edit an article: `PUT /api/article/edit-article/{id}`
         - Delete an article: `DELETE /api/article/delete-article/{id}`
@@ -102,14 +109,14 @@ dotnet run
     - **Writer**:
         - Create an article: `POST /api/article/create-article`
         - Edit an article: `PUT /api/article/edit-article/{id}`
+    - **Writer2** after writer have created article:
+        - Edit an article thats not your own: `PUT /api/article/edit-article/{id}`
     - **Subscriber**:
         - Comment on an article: `POST /api/article/comment/{articleId}`
     - **Guest**:
         - Read articles: `GET /api/article/articles`
         - Read comments: `GET /api/article/comments/{articleId}`
 
-## Conclusion
-
-This guide provides an overview of how to start and use the AuthorizationAPI, including steps to test the functionalities using Swagger. Follow the instructions to authenticate and test the endpoints based on the user roles.
+Remember to test in one session as data is not persistant
 
     
