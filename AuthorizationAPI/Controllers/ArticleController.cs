@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using AuthenticationAPILibrary.Models;
+using AuthenticationAPILibrary;
 
 namespace AuthorizationAPI.Controllers
 {
@@ -14,8 +13,7 @@ namespace AuthorizationAPI.Controllers
         private static List<Article> Articles = new List<Article>();
         private static List<Comment> Comments = new List<Comment>();
 
-       
-        [Authorize(Policy = "EditorOrWriterPolicy")]
+        [Authorize]
         [HttpPut("edit-article/{id}")]
         public IActionResult EditArticle(int id, Article article)
         {
@@ -26,9 +24,8 @@ namespace AuthorizationAPI.Controllers
             }
             if (int.TryParse(User.FindAll(ClaimTypes.NameIdentifier).Last()?.Value, out int userId))
             {
-                var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-
-                if (userRole == "Editor" || (userRole == "Writer" && existingArticle.AuthorId == userId))
+                if (PermissionHelper.HasPermission(User, Permissions.EditArticle) &&
+                    (PermissionHelper.HasPermission(User, Permissions.DeleteArticle) || existingArticle.AuthorId == userId))
                 {
                     existingArticle.Title = article.Title;
                     existingArticle.Content = article.Content;
@@ -39,7 +36,7 @@ namespace AuthorizationAPI.Controllers
             return Unauthorized();
         }
 
-        [Authorize(Policy = "EditorPolicy")]
+        [Authorize]
         [HttpDelete("delete-article/{id}")]
         public IActionResult DeleteArticle(int id)
         {
@@ -49,28 +46,34 @@ namespace AuthorizationAPI.Controllers
                 return NotFound();
             }
 
-            Articles.Remove(article);
-
-            return Ok();
-        }
-
-        [Authorize(Policy = "WriterPolicy")]
-        [HttpPost("create-article")]
-        public IActionResult CreateArticle(Article article)
-        {
-            //var userIdTest = User.FindAll(ClaimTypes.NameIdentifier).Last()?.Value;
-            if (int.TryParse(User.FindAll(ClaimTypes.NameIdentifier).Last()?.Value, out int userId))
+            if (PermissionHelper.HasPermission(User, Permissions.DeleteArticle))
             {
-                article.AuthorId = userId;
-                article.Id = Articles.Count + 1;
-                Articles.Add(article);
+                Articles.Remove(article);
                 return Ok();
             }
 
             return Unauthorized();
         }
 
-        [Authorize(Policy = "SubscriberPolicy")]
+        [Authorize]
+        [HttpPost("create-article")]
+        public IActionResult CreateArticle(Article article)
+        {
+            if (int.TryParse(User.FindAll(ClaimTypes.NameIdentifier).Last()?.Value, out int userId))
+            {
+                if (PermissionHelper.HasPermission(User, Permissions.CreateArticle))
+                {
+                    article.AuthorId = userId;
+                    article.Id = Articles.Count + 1;
+                    Articles.Add(article);
+                    return Ok();
+                }
+            }
+
+            return Unauthorized();
+        }
+
+        [Authorize]
         [HttpPost("comment/{articleId}")]
         public IActionResult CommentOnArticle(int articleId, Comment comment)
         {
@@ -80,14 +83,18 @@ namespace AuthorizationAPI.Controllers
                 return NotFound();
             }
 
-            comment.Id = Comments.Count + 1;
-            comment.ArticleId = articleId;
-            Comments.Add(comment);
+            if (PermissionHelper.HasPermission(User, Permissions.CommentOnArticle))
+            {
+                comment.Id = Comments.Count + 1;
+                comment.ArticleId = articleId;
+                Comments.Add(comment);
+                return Ok();
+            }
 
-            return Ok();
+            return Unauthorized();
         }
 
-        [Authorize(Policy = "EditorPolicy")]
+        [Authorize]
         [HttpDelete("delete-comment/{id}")]
         public IActionResult DeleteComment(int id)
         {
@@ -97,9 +104,13 @@ namespace AuthorizationAPI.Controllers
                 return NotFound();
             }
 
-            Comments.Remove(comment);
+            if (PermissionHelper.HasPermission(User, Permissions.DeleteComment))
+            {
+                Comments.Remove(comment);
+                return Ok();
+            }
 
-            return Ok();
+            return Unauthorized();
         }
 
         [AllowAnonymous]

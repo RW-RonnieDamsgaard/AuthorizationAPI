@@ -1,9 +1,3 @@
-
-using System.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using Microsoft.OpenApi.Models;
@@ -21,20 +15,6 @@ namespace AuthorizationAPI
             // Add services to the container.
             builder.Services.AddControllers();
 
-            // Add Authorization Policies
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("EditorPolicy", policy => policy.RequireRole("Editor"));
-                options.AddPolicy("WriterPolicy", policy => policy.RequireRole("Writer"));
-                options.AddPolicy("SubscriberPolicy", policy => policy.RequireRole("Subscriber"));
-                options.AddPolicy("GuestPolicy", policy => policy.RequireRole("Guest"));
-                options.AddPolicy("EditorOrWriterPolicy", policy =>
-        policy.RequireAssertion(context =>
-            context.User.HasClaim(c => (c.Type == ClaimTypes.Role && (c.Value == "Editor" || c.Value == "Writer")))));
-
-            });
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen(c =>
             {
