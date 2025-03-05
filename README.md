@@ -21,6 +21,7 @@ cd AuthorizationAPI
 2. **Build and run the project**:
 
 `dotnet build`
+
 `dotnet run`
 
 
@@ -35,10 +36,13 @@ cd AuthorizationAPI
     - **Endpoint**: `POST /api/auth/login`
     - **Description**: Authenticates a user and returns a JWT token.
     - **Request Body**:
+
+`
 {
     "username": "string",
     "password": "string"
 }
+`
 
 
 ### Articles
@@ -52,11 +56,12 @@ cd AuthorizationAPI
     - **Description**: Creates a new article.
     - **Request Body**:
 
+`
 {
     "title": "string",
     "content": "string"
 }
-
+`
 
 4. **Delete Article** (Editor):
     - **Endpoint**: `DELETE /api/article/delete-article/{id}`
@@ -73,10 +78,11 @@ cd AuthorizationAPI
     - **Description**: Adds a comment to an article.
     - **Request Body**:
 
+`
 {
     "content": "string"
 }
-
+`
 
 3. **Delete Comment** (Editor):
     - **Endpoint**: `DELETE /api/article/delete-comment/{id}`
