@@ -15,8 +15,8 @@ AuthorizationAPI is an ASP.NET Core Web API that provides functionalities for ma
 
 1. **Clone the repository**:
 
-git clone https://github.com/RW-RonnieDamsgaard/AuthorizationAPI.git
-cd AuthorizationAPI
+`git clone https://github.com/RW-RonnieDamsgaard/AuthorizationAPI.git`
+`cd AuthorizationAPI\AuthorizationAPI`
 
 2. **Build and run the project**:
 
