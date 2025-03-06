@@ -103,9 +103,14 @@ AuthorizationAPI is an ASP.NET Core Web API that provides functionalities for ma
     - Copy the token
 
 3. **Authorize**:
+
+![image](https://github.com/user-attachments/assets/3864f3ef-9741-427a-ac6b-e9585f786358)
+
     - Click on the "Authorize" button in the Swagger UI.
     - Enter the JWT token in the format `Bearer <token>`.
     - Click "Authorize" to authenticate.
+      
+![image](https://github.com/user-attachments/assets/c6cc86d7-aa90-400d-990c-566ca901e12e)
 
 4. **Test Endpoints**:
     - **Editor**:
